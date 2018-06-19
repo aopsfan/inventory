@@ -1,5 +1,9 @@
-const lineItem = (product, qty: 0) => {
-  return { product: product, qty: qty };
+const initial = (product) => {
+  return { product: product, qty: 0 };
 }
 
-export default { lineItem: lineItem };
+const price = ({ product: { price }, qty }) => {
+  return price * qty;
+}
+
+export default { initial, price };

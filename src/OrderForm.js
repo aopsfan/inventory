@@ -1,33 +1,29 @@
 import React, { Component } from 'react';
-import LineItem from './LineItem';
 import Order from './Order';
+import * as R from 'ramda';
 
 const submitOrder = (component, event) => {
   event.preventDefault();
-  component.props.onSubmit(Order.order(component.state.lineItems));
-}
-
-const updateLineItem = (component, product, qty) => {
+  component.props.onSubmit(Order.flatten(component.state.order));
   component.setState((prevState) => {
-    const partialLineItems = prevState.lineItems.map(li => {
-      return li.product !== product;
-    })
-
-    const updatedLineItem = LineItem.lineItem(product, qty)
-
-    return { lineItems: [ ...partialLineItems, updatedLineItem ] };
-  })
+    return {
+      order: Order.initial(component.props.products, prevState.order.id + 1)
+    };
+  });
 }
 
-const renderLineItem = (component, product) => {
+const renderLineItem = (component, { product, qty }, qtyLens) => {
   return (
     <tr key={product.id}>
       <td>{product.id}</td>
       <td>{product.name}</td>
       <td>{product.description}</td>
       <td>{product.price}</td>
-      <input type="number"
-        onChange={(e) => updateLineItem(component, product, e.target.value)} />
+      <td><input type="number"
+        value={qty}
+        onChange={(e) => {
+          component.setState(R.set(qtyLens, parseInt(e.target.value, 10)))
+        }} /></td>
     </tr>
   )
 }
@@ -36,7 +32,7 @@ export default class OrderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lineItems: []
+      order: Order.initial(props.products, 0)
     }
   }
 
@@ -52,7 +48,12 @@ export default class OrderForm extends Component {
               <th>Price</th>
               <th>Qty</th>
             </tr>
-            {this.props.products.map(p => renderLineItem(this, p))}
+            {
+              this.state.order.lineItems.map((l, i) => {
+                const lens = R.lensPath(['order', 'lineItems', i, 'qty']);
+                return renderLineItem(this, l, lens);
+              })
+            }
           </tbody>
         </table>
         <input type="submit" value="Submit" />

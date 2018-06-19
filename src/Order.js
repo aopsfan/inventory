@@ -1,15 +1,25 @@
-const add = (a, b) => a + b;
+import * as R from 'ramda';
+import LineItem from './LineItem';
 
-const order = (lineItems) => {
-  return { lineItems: lineItems }
+const initial = (products, id) => {
+  return { lineItems: products.map(LineItem.initial), id };
 }
 
-const numberOfCases = ({ lineItems }) => {
-  return lineItems.map((i) => i.qty).reduce(add);
-}
+const flatten = R.over(
+  R.lensProp('lineItems'),
+  R.filter(l => l.qty > 0)
+);
 
-const totalPrice = ({ lineItems }) => {
-  return lineItems.map((i) => i.price).reduce(add);
-}
+const numberOfCases = R.pipe( // order
+  R.prop('lineItems'),        // lineItems
+  R.map(R.prop('qty')),       // quantities
+  R.sum                       // sum of quantities
+);
 
-export default { order: order, numberOfCases: numberOfCases, totalPrice: totalPrice };
+const totalPrice = R.pipe(  // order
+  R.prop('lineItems'),      // line items
+  R.map(LineItem.price),    // prices
+  R.sum                     // total price
+);
+
+export default { initial, flatten, numberOfCases, totalPrice };
