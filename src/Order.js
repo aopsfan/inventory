@@ -1,8 +1,29 @@
-import * as R from 'ramda';
+import R from './Ramda';
 import LineItem from './LineItem';
 
-const initial = (products, id) => {
-  return { lineItems: products.map(LineItem.initial), id };
+const initial = (id) => {
+  return { lineItems: [], id };
+}
+
+const lineItemLens = (productId) => {
+  return R.compose(
+    R.lensProp('lineItems'),
+    R.lensMatcher(
+      R.propEq('productId', productId),
+      LineItem.initial(productId)
+    )
+  );
+}
+
+const zipLineItems = (products, { lineItems }) => {
+  return products.map((product) => {
+    const qty = R.pipe(
+      R.find(R.propEq('productId', product.id)),
+      R.prop('qty'),
+      R.or(R.__, 0)
+    );
+    return { ...product, qty: qty(lineItems) };
+  })
 }
 
 const flatten = R.over(
@@ -22,4 +43,6 @@ const totalPrice = R.pipe(  // order
   R.sum                     // total price
 );
 
-export default { initial, flatten, numberOfCases, totalPrice };
+export default {
+  initial, zipLineItems, flatten, numberOfCases, totalPrice, lineItemLens
+};

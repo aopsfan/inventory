@@ -1,8 +1,8 @@
-const initial = (product) => {
-  return { product: product, qty: 0 };
+const initial = (productId) => {
+  return { productId, qty: 0 };
 }
 
-const price = ({ product: { price }, qty }) => {
+const price = ({ productId: { price }, qty }) => {
   return price * qty;
 }
 

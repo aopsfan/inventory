@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Order from './Order';
-import * as R from 'ramda';
+import LineItem from './LineItem';
+import R from './Ramda';
 
 const submitOrder = (component, event) => {
   event.preventDefault();
@@ -12,27 +13,35 @@ const submitOrder = (component, event) => {
   });
 }
 
-const renderLineItem = (component, { product, qty }, qtyLens) => {
+const renderLineItem = (component, { id, name, description, price, qty }, qtyLens) => {
   return (
-    <tr key={product.id}>
-      <td>{product.id}</td>
-      <td>{product.name}</td>
-      <td>{product.description}</td>
-      <td>{product.price}</td>
+    <tr key={id}>
+      <td>{id}</td>
+      <td>{name}</td>
+      <td>{description}</td>
+      <td>{price}</td>
       <td><input type="number"
         value={qty}
         onChange={(e) => {
-          component.setState(R.set(qtyLens, parseInt(e.target.value, 10)))
+          component.setState(R.set(qtyLens, parseInt(e.target.value, 10)));
         }} /></td>
     </tr>
   )
+}
+
+const qtyLens = (id) => {
+  return R.compose(
+    R.lensProp('order'),
+    Order.lineItemLens(id),
+    R.lensProp('qty')
+  );
 }
 
 export default class OrderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: Order.initial(props.products, 0)
+      order: Order.initial(0)
     }
   }
 
@@ -49,9 +58,8 @@ export default class OrderForm extends Component {
               <th>Qty</th>
             </tr>
             {
-              this.state.order.lineItems.map((l, i) => {
-                const lens = R.lensPath(['order', 'lineItems', i, 'qty']);
-                return renderLineItem(this, l, lens);
+              Order.zipLineItems(this.props.products, this.state.order).map((l) => {
+                return renderLineItem(this, l, qtyLens(l.id));
               })
             }
           </tbody>

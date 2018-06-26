@@ -22,7 +22,7 @@ export default class AddProductForm extends Component {
         <label>ID:
           <input type="number"
             value={this.id}
-            onChange={(e) => this.setState({ id: e.target.value })} />
+            onChange={(e) => this.setState({ id: parseInt(e.target.value, 10) })} />
         </label>
         <label>Name:
           <input type="text"
@@ -37,7 +37,7 @@ export default class AddProductForm extends Component {
         <label>Price:
           <input type="number"
             value={this.price}
-            onChange={(e) => this.setState({ price: e.target.value })} />
+            onChange={(e) => this.setState({ price: parseFloat(e.target.value, 10) })} />
         </label>
         <input type="submit" value="Submit" />
       </form>
