@@ -17,12 +17,12 @@ const lineItemLens = (productId) => {
 
 const zipLineItems = (products, { lineItems }) => {
   return products.map((product) => {
-    const qty = R.pipe(
-      R.find(R.propEq('productId', product.id)),
-      R.prop('qty'),
-      R.or(R.__, 0)
+    const qty = R.pipe(                          // line items
+      R.find(R.propEq('productId', product.id)), // line item OR undefined
+      R.prop('qty'),                             // quantity OR undefined
+      R.or(R.__, 0)                              // quantity OR 0
     );
-    return { ...product, qty: qty(lineItems) };
+    return R.assoc('qty', qty(lineItems), product);
   })
 }
 

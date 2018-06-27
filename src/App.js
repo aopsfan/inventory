@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import ProductList from './ProductList';
 import AddProductForm from './AddProductForm';
-import OrderList from './OrderList'
-import OrderForm from './OrderForm'
-import './App.css'
+import OrderList from './OrderList';
+import OrderForm from './OrderForm';
+import R from './Ramda';
+import './App.css';
 
-const addProduct = (component, product) => {
-  component.setState((prevState) => {
-    return { ...prevState, products: [ ...prevState.products, product ]};
-  })
+const productsLens = R.lensProp('products');
+const ordersLens = R.lensProp('orders');
+
+const localState = (component, lens) => {
+  return R.view(lens, component.state);
 }
 
-const addOrder = (component, order) => {
-  component.setState((prevState) => {
-    return { ...prevState, orders: [ ...prevState.orders, order ]};
-  })
-}
+const setLocalState = R.curry((component, lens, f) => {
+  component.setState(R.over(lens, f));
+});
 
 class App extends Component {
   constructor(props) {
@@ -52,16 +52,15 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="App">
         <h3>Available Products</h3>
-        <ProductList items={this.state.products}></ProductList>
-        <AddProductForm onSubmit={(e) => addProduct(this, e)}></AddProductForm>
+        <ProductList setLocalState={setLocalState(this, productsLens)} products={localState(this, productsLens)}/>
+        <AddProductForm setLocalState={setLocalState(this, productsLens)}/>
         <h3>Orders</h3>
-        <OrderList orders={this.state.orders}></OrderList>
+        <OrderList orders={localState(this, ordersLens)}></OrderList>
         <h3>Order Form</h3>
-        <OrderForm products={this.state.products} onSubmit={e => addOrder(this, e)}></OrderForm>
+        <OrderForm setLocalState={setLocalState(this, ordersLens)} products={localState(this, productsLens)}></OrderForm>
       </div>
     );
   }

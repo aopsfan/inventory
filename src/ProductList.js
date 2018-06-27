@@ -11,7 +11,7 @@ const renderProduct = R.curry((component, product, index) => {
       <td><button
         onClick={e => {
           e.preventDefault();
-          component.setState(R.over(R.lensProp('products'), R.drop(index)))
+          component.props.setLocalState(R.remove(index, 1));
         }}>
         Delete
       </button></td>
@@ -20,13 +20,6 @@ const renderProduct = R.curry((component, product, index) => {
 })
 
 export default class ProductList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      products: props.items
-    }
-  }
-
   render() {
     return (
       <table>
@@ -37,7 +30,7 @@ export default class ProductList extends Component {
             <th>Description</th>
             <th>Price</th>
           </tr>
-          {this.state.products.map(renderProduct(this))}
+          {this.props.products.map(renderProduct(this))}
         </tbody>
       </table>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import R from './Ramda';
 
 export default class AddProductForm extends Component {
   constructor(props) {
@@ -11,14 +12,12 @@ export default class AddProductForm extends Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.onSubmit(this.state);
-  }
-
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <form onSubmit={e => {
+        e.preventDefault();
+        this.props.setLocalState(R.append(this.state));
+      }}>
         <label>ID:
           <input type="number"
             value={this.id}

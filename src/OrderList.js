@@ -6,7 +6,6 @@ const renderOrder = (order) => {
     <tr key={order.id}>
       <td>{order.id}</td>
       <td>{Order.numberOfCases(order)}</td>
-      <td>{Order.totalPrice(order)}</td>
     </tr>
   )
 }
@@ -19,7 +18,6 @@ export default class OrderList extends Component {
           <tr>
           <th>ID</th>
           <th>Cases</th>
-          <th>Price</th>
           </tr>
           {this.props.orders.map(renderOrder)}
         </tbody>

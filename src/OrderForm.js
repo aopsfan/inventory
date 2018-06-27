@@ -3,25 +3,26 @@ import Order from './Order';
 import LineItem from './LineItem';
 import R from './Ramda';
 
-const submitOrder = (component, event) => {
-  event.preventDefault();
-  component.props.onSubmit(Order.flatten(component.state.order));
-  component.setState((prevState) => {
+const submitOrder = component => {
+  const order = Order.flatten(component.state.order);
+  component.props.setLocalState(R.append(order));
+
+  component.setState(prevState => {
     return {
-      order: Order.initial(component.props.products, prevState.order.id + 1)
+      order: Order.initial(prevState.order.id + 1)
     };
   });
 }
 
-const renderLineItem = (component, { id, name, description, price, qty }, qtyLens) => {
+const renderLineItem = (component, lineItem, qtyLens) => {
   return (
-    <tr key={id}>
-      <td>{id}</td>
-      <td>{name}</td>
-      <td>{description}</td>
-      <td>{price}</td>
+    <tr key={lineItem.id}>
+      <td>{lineItem.id}</td>
+      <td>{lineItem.name}</td>
+      <td>{lineItem.description}</td>
+      <td>{lineItem.price}</td>
       <td><input type="number"
-        value={qty}
+        value={lineItem.qty}
         onChange={(e) => {
           component.setState(R.set(qtyLens, parseInt(e.target.value, 10)));
         }} /></td>
@@ -29,7 +30,7 @@ const renderLineItem = (component, { id, name, description, price, qty }, qtyLen
   )
 }
 
-const qtyLens = (id) => {
+const qtyLens = id => {
   return R.compose(
     R.lensProp('order'),
     Order.lineItemLens(id),
@@ -47,7 +48,10 @@ export default class OrderForm extends Component {
 
   render() {
     return (
-      <form onSubmit={(e) => submitOrder(this, e)}>
+      <form onSubmit={e => {
+        e.preventDefault();
+        submitOrder(this);
+      }}>
         <table>
           <tbody>
             <tr>
