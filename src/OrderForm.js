@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import Order from './Order';
 import LineItem from './LineItem';
 import R from './Ramda';
+import { withRouter } from 'react-router-dom';
 
 const submitOrder = component => {
   const order = Order.flatten(component.state.order);
   component.props.setLocalState(R.append(order));
-
-  component.setState(prevState => {
-    return {
-      order: Order.initial(prevState.order.id + 1)
-    };
-  });
+  component.props.history.push('/orders');
 }
 
 const renderLineItem = (component, lineItem, qtyLens) => {
@@ -38,7 +34,7 @@ const qtyLens = id => {
   );
 }
 
-export default class OrderForm extends Component {
+class OrderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,3 +69,5 @@ export default class OrderForm extends Component {
     )
   }
 }
+
+export default withRouter(OrderForm);
