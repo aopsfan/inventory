@@ -47,8 +47,8 @@ class App extends Component {
 
             <Route exact path="/products" render={() => (
               <ProductsR
-                setLocalState={setLocalState(this, productsLens)}
-                products={localState(this, productsLens)} />
+                source={this}
+                lenses={{products: productsLens}} />
             )}/>
 
             <Route path="/orders" render={() => (

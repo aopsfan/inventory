@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import Order from './Order';
 import LineItem from './LineItem';
 import R from './Ramda';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
+const goBack = component => {
+  component.props.history.push('/orders');
+}
 
 const submitOrder = component => {
   const order = Order.flatten(component.state.order);
   component.props.setLocalState(R.append(order));
-  component.props.history.push('/orders');
+
+  goBack(component);
 }
 
 const renderLineItem = (component, lineItem, qtyLens) => {
@@ -48,6 +53,7 @@ class OrderForm extends Component {
         e.preventDefault();
         submitOrder(this);
       }}>
+        <Link to="/orders">Cancel</Link>
         <table>
           <tbody>
             <tr>
