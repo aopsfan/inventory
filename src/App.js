@@ -1,26 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
+import Order from './Order';
+import Product from './Product';
 import OrdersR from './routes/OrdersR';
 import ProductsR from './routes/ProductsR';
-
 import R from './Ramda';
 import './App.css';
-
-const productsLens = R.lensProp('products');
-const ordersLens = R.lensProp('orders');
-
-const localState = (component, lens) => {
-  return R.view(lens, component.state);
-}
-
-const setLocalState = R.curry((component, lens, f) => {
-  component.setState(R.over(lens, f));
-});
 
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       products: [
         { id: 3021, name: 'Brownies', description: '30 ct.', price: 19 },
@@ -28,7 +18,9 @@ class App extends Component {
         { id: 930, name: 'Boxes', description: '1 ct.', price: 109 },
         { id: 193, name: 'Candles', description: '200 ct.', price: 39 }
       ],
-      orders: []
+      nextProduct: Product.initial(0),
+      orders: [],
+      nextOrder: Order.initial(0)
     };
   }
 
@@ -48,15 +40,20 @@ class App extends Component {
             <Route exact path="/products" render={() => (
               <ProductsR
                 source={this}
-                lenses={{products: productsLens}} />
+                lenses={{
+                  products: R.lensProp('products'),
+                  nextProduct: R.lensProp('nextProduct')
+                }} />
             )}/>
 
             <Route path="/orders" render={() => (
               <OrdersR
-                setLocalState={setLocalState(this, ordersLens)}
-                orders={localState(this, ordersLens)}
-                products={localState(this, productsLens)}
-                />
+                source={this}
+                lenses={{
+                  products: R.lensProp('products'),
+                  orders: R.lensProp('orders'),
+                  nextOrder: R.lensProp('nextOrder')
+                }} />
             )}/>
           </div>
         </div>

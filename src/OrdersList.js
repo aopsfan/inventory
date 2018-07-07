@@ -1,7 +1,8 @@
 import React from 'react';
 import Order from './Order';
+import withState from './Stater';
 
-const renderOrder = (order) => {
+const renderOrder = order => {
   return (
     <tr key={order.id}>
       <td>{order.id}</td>
@@ -10,16 +11,16 @@ const renderOrder = (order) => {
   )
 }
 
-const OrdersList = ({ orders }) => (
+const OrdersList = props => (
   <table>
     <tbody>
       <tr>
       <th>ID</th>
       <th>Cases</th>
       </tr>
-      { orders.map(renderOrder) }
+      { props.get.orders.map(renderOrder) }
     </tbody>
   </table>
 );
 
-export default OrdersList;
+export default withState(OrdersList);

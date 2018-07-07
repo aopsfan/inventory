@@ -1,5 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
+import withState from './Stater';
 
 const renderProduct = R.curry((props, product, index) => {
   return (
@@ -33,4 +34,4 @@ const ProductList = props => (
   </table>
 );
 
-export default ProductList;
+export default withState(ProductList);

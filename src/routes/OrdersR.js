@@ -2,11 +2,15 @@ import React from 'react';
 import OrdersList from '../OrdersList';
 import OrderForm from '../OrderForm';
 import { Route, Link } from 'react-router-dom';
+import withState from '../Stater';
+import R from '../Ramda';
 
-const OrdersR = (props) => (
+const OrdersR = props => (
   <div>
     <h3>Orders</h3>
-    <OrdersList orders={props.orders} />
+    <OrdersList
+      source={props.source}
+      lenses={R.pick(['orders'], props.lenses)} />
 
     <Route exact path="/orders" render={() => (
       <Link to="/orders/new">New Order</Link>
@@ -14,11 +18,11 @@ const OrdersR = (props) => (
 
     <Route exact path="/orders/new" render={() => (
       <OrderForm
-        setLocalState={props.setLocalState}
-        products={props.products}
+        source={props.source}
+        lenses={props.lenses}
         />
     )} />
   </div>
 );
 
-export default OrdersR;
+export default withState(OrdersR);
