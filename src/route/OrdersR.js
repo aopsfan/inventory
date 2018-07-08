@@ -1,9 +1,9 @@
 import React from 'react';
-import OrdersList from '../OrdersList';
-import OrderForm from '../OrderForm';
+import OrdersList from '../component/OrdersList';
+import OrderForm from '../component/OrderForm';
 import { Route, Link } from 'react-router-dom';
-import withState from '../Stater';
-import R from '../Ramda';
+import withState from '../lib/Stater';
+import R from '../lib/Ramda';
 
 const OrdersR = props => (
   <div>

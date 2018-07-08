@@ -1,6 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
-import withState from './Stater';
+import withState from '../lib/Stater';
 
 const renderProduct = R.curry((props, product, index) => {
   return (

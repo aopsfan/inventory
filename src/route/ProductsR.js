@@ -1,8 +1,8 @@
 import React from 'react';
-import ProductList from '../ProductList';
-import AddProductForm from '../AddProductForm';
-import withState from '../Stater';
-import R from '../Ramda';
+import ProductList from '../component/ProductList';
+import AddProductForm from '../component/AddProductForm';
+import withState from '../lib/Stater';
+import R from '../lib/Ramda';
 
 const ProductsR = props => (
   <div>

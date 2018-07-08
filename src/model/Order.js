@@ -1,4 +1,4 @@
-import R from './Ramda';
+import R from '../lib/Ramda';
 import LineItem from './LineItem';
 
 const initial = (id) => {

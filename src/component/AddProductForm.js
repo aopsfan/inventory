@@ -1,7 +1,7 @@
 import React from 'react';
-import Product from './Product';
-import withState from './Stater';
-import R from './Ramda';
+import Product from '../model/Product';
+import withState from '../lib/Stater';
+import R from '../lib/Ramda';
 
 const AddProductForm = props => (
   <form onSubmit={e => {

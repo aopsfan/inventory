@@ -1,8 +1,8 @@
 import React from 'react';
-import Order from './Order';
-import R from './Ramda';
+import Order from '../model/Order';
+import R from '../lib/Ramda';
+import withState from '../lib/Stater';
 import { Link, withRouter } from 'react-router-dom';
-import withState from './Stater';
 
 const qtyLens = id => {
   return R.compose(

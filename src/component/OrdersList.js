@@ -1,6 +1,6 @@
 import React from 'react';
-import Order from './Order';
-import withState from './Stater';
+import Order from '../model/Order';
+import withState from '../lib/Stater';
 
 const renderOrder = order => {
   return (

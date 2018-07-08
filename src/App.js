@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Order from './Order';
-import Product from './Product';
-import OrdersR from './routes/OrdersR';
-import ProductsR from './routes/ProductsR';
-import R from './Ramda';
 import './App.css';
+
+import R from './lib/Ramda';
+
+import OrdersR from './route/OrdersR';
+import ProductsR from './route/ProductsR';
+
+import Order from './model/Order';
+import Product from './model/Product';
 
 class App extends Component {
   constructor(props) {
