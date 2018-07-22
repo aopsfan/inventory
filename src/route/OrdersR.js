@@ -1,6 +1,7 @@
 import React from 'react';
 import OrdersList from '../component/OrdersList';
 import OrderForm from '../component/OrderForm';
+import OrderDetail from '../component/OrderDetail';
 import { Route, Link } from 'react-router-dom';
 import withState from '../lib/Stater';
 import R from '../lib/Ramda';
@@ -22,6 +23,15 @@ const OrdersR = props => (
         lenses={props.lenses}
         />
     )} />
+
+    <Route exact path="/orders/show/:id" render={({ match }) => (
+      <OrderDetail
+        source={props.source}
+        lenses={R.pick(['orders', 'products'], props.lenses)}
+        orderId={parseInt(match.params.id, 10)}
+        />
+    )} />
+
   </div>
 );
 

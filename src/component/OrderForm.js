@@ -4,13 +4,6 @@ import R from '../lib/Ramda';
 import withState from '../lib/Stater';
 import { Link, withRouter } from 'react-router-dom';
 
-const qtyLens = id => {
-  return R.compose(
-    Order.lineItemLens(id),
-    R.lensProp('qty')
-  );
-}
-
 const goBack = ({ history }) => {
   history.push('/orders');
 }
@@ -25,17 +18,18 @@ const submitOrder = props => {
   goBack(props);
 }
 
-const renderLineItem = (props, lineItem, qtyLens) => {
+const renderLineItem = (props, li) => {
   return (
-    <tr key={lineItem.id}>
-      <td>{lineItem.id}</td>
-      <td>{lineItem.name}</td>
-      <td>{lineItem.description}</td>
-      <td>{lineItem.price}</td>
+    <tr key={li.id}>
+      <td>{li.id}</td>
+      <td>{li.name}</td>
+      <td>{li.description}</td>
+      <td>{li.price}</td>
       <td><input type="number"
-        value={lineItem.qty}
+        value={li.qty}
         onChange={(e) => {
-          props.set.nextOrder(R.set(qtyLens, parseInt(e.target.value, 10)));
+          const newQty = parseInt(e.target.value, 10);
+          props.set.nextOrder(R.set(Order.qtyLens(li.id), newQty));
         }} /></td>
     </tr>
   )
@@ -57,8 +51,8 @@ const OrderForm = props => (
           <th>Qty</th>
         </tr>
         {
-          Order.zipLineItems(props.get.products, props.get.nextOrder).map((l) => {
-            return renderLineItem(props, l, qtyLens(l.id));
+          Order.form(props.get.products, props.get.nextOrder).map(li => {
+            return renderLineItem(props, li);
           })
         }
       </tbody>
