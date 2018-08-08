@@ -1,7 +1,18 @@
 import R from './Ramda';
 
+const localStorageKey = 'inventoryApp';
+
+const getState = () => {
+  const data = localStorage.getItem(localStorageKey);
+  return JSON.parse(data);
+}
+
 const setStateWithLens = R.curry((source, lens, f) => {
-  source.setState(R.over(lens, f));
+  source.setState(prevState => {
+    const newState = R.over(lens, f, prevState);
+    localStorage.setItem(localStorageKey, JSON.stringify(newState));
+    return newState;
+  });
 });
 
 const withState = R.curry((component, props) => {
@@ -16,4 +27,4 @@ const withState = R.curry((component, props) => {
   return component(withStateProps(props));
 });
 
-export default withState;
+export default { getState, withState };

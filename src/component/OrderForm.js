@@ -1,7 +1,7 @@
 import React from 'react';
 import Order from '../model/Order';
 import R from '../lib/Ramda';
-import withState from '../lib/Stater';
+import Stater from '../lib/Stater';
 import { Link, withRouter } from 'react-router-dom';
 
 const goBack = ({ history }) => {
@@ -61,4 +61,4 @@ const OrderForm = props => (
   </form>
 );
 
-export default withState(withRouter(OrderForm));
+export default Stater.withState(withRouter(OrderForm));

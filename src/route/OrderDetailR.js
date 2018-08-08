@@ -1,6 +1,6 @@
 import React from 'react';
 import R from '../lib/Ramda';
-import withState from '../lib/Stater';
+import Stater from '../lib/Stater';
 import Order from '../model/Order';
 
 const orderLens = id => R.lensMatcher(R.propEq('id', id), undefined);
@@ -41,4 +41,4 @@ const InvalidOrderDetail = props => (<div>Invalid Order</div>);
 const OrderDetailR = R.ifElse(thisOrder, ValidOrderDetail, InvalidOrderDetail);
 
 export { orderLens, orderForId, thisOrder };
-export default withState(OrderDetailR);
+export default Stater.withState(OrderDetailR);

@@ -2,7 +2,7 @@ import React from 'react';
 import OrdersList from '../component/OrdersList';
 import OrderForm from '../component/OrderForm';
 import { Route, Link } from 'react-router-dom';
-import withState from '../lib/Stater';
+import Stater from '../lib/Stater';
 import R from '../lib/Ramda';
 
 const OrdersR = props => (
@@ -25,4 +25,4 @@ const OrdersR = props => (
   </div>
 );
 
-export default withState(OrdersR);
+export default Stater.withState(OrdersR);

@@ -1,6 +1,6 @@
 import React from 'react';
 import Order from '../model/Order';
-import withState from '../lib/Stater';
+import Stater from '../lib/Stater';
 import R from '../lib/Ramda';
 import { Link } from 'react-router-dom';
 
@@ -35,4 +35,4 @@ const OrdersList = props => (
   </table>
 );
 
-export default withState(OrdersList);
+export default Stater.withState(OrdersList);

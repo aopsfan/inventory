@@ -1,6 +1,6 @@
 import React from 'react';
 import Product from '../model/Product';
-import withState from '../lib/Stater';
+import Stater from '../lib/Stater';
 import R from '../lib/Ramda';
 
 const AddProductForm = props => (
@@ -35,4 +35,4 @@ const AddProductForm = props => (
   </form>
 );
 
-export default withState(AddProductForm);
+export default Stater.withState(AddProductForm);
