@@ -2,7 +2,7 @@ import * as R from 'ramda';
 
 const lensMatcher = (matcher, defaultValue) => {
   const getter = R.pipe(R.find(matcher), R.or(R.__, defaultValue));
-  
+
   const setter = (value, data) => {
     const extendedData = R.concat(data, [defaultValue]);
     const index = R.findIndex(matcher, data);
@@ -14,7 +14,4 @@ const lensMatcher = (matcher, defaultValue) => {
   return R.lens(getter, setter);
 };
 
-export default {
-  ...R,
-  lensMatcher
-};
+export default R.assoc('lensMatcher', lensMatcher, R);

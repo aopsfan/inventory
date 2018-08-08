@@ -34,10 +34,10 @@ const zip = (products, { lineItems }) => {
   });
 }
 
-const price = R.pipe(
-  zip,
-  R.map(LineItem.price),
-  R.sum
+const price = R.pipe(      // products, order
+  zip,                     // list of products with qty
+  R.map(LineItem.price),   // list of prices
+  R.sum                    // sum of prices
 );
 
 const flatten = R.over(

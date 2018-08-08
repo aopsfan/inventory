@@ -1,4 +1,4 @@
-import { orderForId } from './OrderDetail';
+import { orderForId } from './OrderDetailR';
 
 it('finds an order given an ID', () => {
   const orders = [

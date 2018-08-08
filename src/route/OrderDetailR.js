@@ -38,7 +38,7 @@ const ValidOrderDetail = props => (
 
 const InvalidOrderDetail = props => (<div>Invalid Order</div>);
 
-const OrderDetail = R.ifElse(thisOrder, ValidOrderDetail, InvalidOrderDetail);
+const OrderDetailR = R.ifElse(thisOrder, ValidOrderDetail, InvalidOrderDetail);
 
 export { orderLens, orderForId, thisOrder };
-export default withState(OrderDetail);
+export default withState(OrderDetailR);

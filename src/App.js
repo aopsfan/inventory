@@ -6,6 +6,7 @@ import R from './lib/Ramda';
 
 import OrdersR from './route/OrdersR';
 import ProductsR from './route/ProductsR';
+import OrderDetailR from './route/OrderDetailR';
 
 import Order from './model/Order';
 import Product from './model/Product';
@@ -25,6 +26,13 @@ class App extends Component {
       orders: [],
       nextOrder: Order.initial(0)
     };
+
+    this.lenses = {
+      products: R.lensProp('products'),
+      orders: R.lensProp('orders'),
+      nextProduct: R.lensProp('nextProduct'),
+      nextOrder: R.lensProp('nextOrder')
+    };
   }
 
   render() {
@@ -43,21 +51,22 @@ class App extends Component {
             <Route exact path="/products" render={() => (
               <ProductsR
                 source={this}
-                lenses={{
-                  products: R.lensProp('products'),
-                  nextProduct: R.lensProp('nextProduct')
-                }} />
+                lenses={R.pick(['products', 'nextProduct'], this.lenses)} />
             )}/>
 
             <Route path="/orders" render={() => (
               <OrdersR
                 source={this}
-                lenses={{
-                  products: R.lensProp('products'),
-                  orders: R.lensProp('orders'),
-                  nextOrder: R.lensProp('nextOrder')
-                }} />
+                lenses={this.lenses} />
             )}/>
+
+            <Route exact path="/order/:id" render={({ match }) => (
+              <OrderDetailR
+                source={this}
+                lenses={R.pick(['orders', 'products'], this.lenses)}
+                orderId={parseInt(match.params.id, 10)}
+                />
+            )} />
           </div>
         </div>
       </Router>
